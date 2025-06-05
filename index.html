@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LMG Games</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg-color: linear-gradient(to bottom, #5d0202, #000);
+      --text-color: #f9e7e7;
+      --button-bg: #e63946;
+      --button-hover: #d62839;
+      --heading-color: #FFD700;
+    }
+
+    [data-theme="light"] {
+      --bg-color: linear-gradient(to bottom, #fff, #1b45d1);
+      --text-color: #222;
+      --button-bg: #007bff;
+      --button-hover: #0056b3;
+      --heading-color: #222;
+    }
+
+    [data-theme="rainbow"] {
+      --bg-color: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+      --text-color: #fff;
+      --button-bg: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+      --button-hover: #ff6347;
+      --heading-color: #fff;
+      animation: changeColor 4s linear infinite, movingGradient 5s linear infinite;
+    }
+
+    body {
+      text-align: center;
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 50px;
+      position: relative;
+      overflow: hidden;
+      transition: background 1s ease, color 1s ease;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--heading-color);
+      transition: color 1s ease;
+    }
+
+    .menu {
+      display: none;
+    }
+
+    button {
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--button-bg);
+      color: white;
+      font-family: 'Roboto', sans-serif;
+      transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+      background-color: var(--button-hover);
+      transform: scale(1.1);
+    }
+
+    .welcome-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, #6a0404, #111);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .game-container {
+      margin-top: 20px;
+    }
+
+    .about-us {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      width: 60%;
+    }
+
+    .toggle-container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 999;
+    }
+
+    @keyframes changeColor {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    @keyframes movingGradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toggle-container">
+    <button onclick="toggleTheme()">Toggle Dark/Light Mode</button>
+    <button onclick="toggleRainbowMode()">Rainbow Mode</button>
+    <button onclick="goHome()">Back to Home</button>
+    
+  </div>
+
+  <div id="welcomeScreen" class="welcome-screen">
+    <h1>Welcome to LMG Games!</h1>
+    <button onclick="startGame()">Start</button>
+    <a href="aboutus.html"><button>About Us</button></a>
+  </div>
+
+  <div class="menu">
+    <h1>LMG Games</h1>
+    <button onclick="loadGame('game1.html')">Blub Blub</button>
+    <button onclick="loadGame('game2.html')">Test Game 1</button>
+    <button onclick="loadGame('game3.html')">Test Game 2</button> 
+  </div>
+
+  <div class="game-container">
+    <iframe id="gameFrame" width="800" height="600"></iframe>
+  </div>
+
+  <script>
+    function startGame() {
+      document.getElementById('welcomeScreen').style.opacity = 0;
+      setTimeout(() => {
+        document.getElementById('welcomeScreen').style.display = 'none';
+        document.querySelector('.menu').style.display = 'block';
+      }, 500);
+    }
+
+    function loadGame(gameUrl) {
+      document.getElementById('gameFrame').src = gameUrl;
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.body.getAttribute("data-theme");
+      const newTheme = currentTheme === "light" ? "dark" : "light";
+      document.body.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+    }
+
+    function toggleRainbowMode() {
+      const currentTheme = document.body.getAttribute("data-theme");
+      if (currentTheme === "rainbow") {
+        const newTheme = "dark";
+        document.body.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+      } else {
+        const newTheme = "rainbow";
+        document.body.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+      }
+    }
+
+    const epilepsyColors = [
+      ['#39FF14', '#FF073A'], ['#FF073A', '#39FF14'], ['#0FF0FC', '#F000FF'],
+      ['#F000FF', '#0FF0FC'], ['#FFFF33', '#FF00CC'], ['#FF00CC', '#FFFF33'],
+      ['#00FFFF', '#FF4500'], ['#FF4500', '#00FFFF'], ['#8A2BE2', '#00FF00'],
+      ['#00FF00', '#8A2BE2'], ['#FFFFFF', '#000000'], ['#000000', '#FFFFFF'],
+      ['#FF1493', '#FFFF00'], ['#FFFF00', '#FF1493'], ['#00FF7F', '#FF6347'],
+      ['#FF6347', '#00FF7F']
+    ];
+
+    let epilepsyInterval = null;
+    let epilepsyIndex = 0;
+    let epilepsyActive = false;
+
+    function toggleEpilepsyMode() {
+      if (!epilepsyActive) {
+        epilepsyInterval = setInterval(() => {
+          const [bg, text] = epilepsyColors[epilepsyIndex % epilepsyColors.length];
+          document.body.style.background = bg;
+          document.body.style.color = text;
+          document.body.style.transition = 'background 0.05s, color 0.05s';
+
+          document.querySelectorAll('button').forEach(btn => {
+            btn.style.background = text;
+            btn.style.color = bg;
+            btn.style.boxShadow = `0 0 20px ${text}`;
+            btn.style.transition = 'background 0.05s, color 0.05s, box-shadow 0.05s';
+          });
+
+          document.querySelectorAll('h1').forEach(h => {
+            h.style.color = text;
+            h.style.textShadow = `0 0 10px ${text}, 0 0 20px ${bg}`;
+          });
+
+          document.querySelectorAll('*').forEach(el => {
+            el.style.transition = 'all 0.05s ease-in-out';
+          });
+
+          epilepsyIndex++;
+        }, 50);
+        epilepsyActive = true;
+      } else {
+        clearInterval(epilepsyInterval);
+        epilepsyActive = false;
+        document.body.style.background = '';
+        document.body.style.color = '';
+        document.querySelectorAll('button').forEach(btn => {
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.style.boxShadow = '';
+        });
+        document.querySelectorAll('h1').forEach(h => {
+          h.style.color = '';
+          h.style.textShadow = '';
+        });
+      }
+    }
+
+    function goHome() {
+      location.reload();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        document.body.setAttribute("data-theme", savedTheme);
+      }
+    });
+  </script>
+</body>
+</html>
